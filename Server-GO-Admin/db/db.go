@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"example.com/go-admin/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -30,6 +31,8 @@ func InitDB() error { // Fungsi mengembalikan error
 	if err != nil {
 		return fmt.Errorf("could not connect with the database: %w", err)
 	}
+
+	DB.AutoMigrate(&models.User{})
 
 	return nil
 }
