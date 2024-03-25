@@ -2,10 +2,11 @@ module example.com/go-admin
 
 go 1.21.6
 
+require golang.org/x/crypto v0.21.0
+
 require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
 )
 
 require (
