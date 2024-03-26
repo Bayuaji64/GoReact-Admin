@@ -1,15 +1,22 @@
 package utility
 
 import (
+	"errors"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-const SecretKey = "rahasia"
-
 func GenerateJWT(userID int) (string, error) {
+
+	SecretKey := os.Getenv("JWT_KEY")
+
+	if SecretKey == "" {
+		return "", errors.New("JWT_KEY is not set in the environment variables")
+	}
+
 	claims := &jwt.RegisteredClaims{
 		Issuer:    strconv.Itoa(userID),
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
@@ -30,6 +37,12 @@ type Claims struct {
 }
 
 func ParseJWT(tokenString string) (*jwt.Token, *Claims, error) {
+
+	SecretKey := os.Getenv("JWT_KEY")
+
+	if SecretKey == "" {
+		return nil, nil, errors.New("JWT_KEY is not set in the environment variables")
+	}
 	claims := &Claims{}
 
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
