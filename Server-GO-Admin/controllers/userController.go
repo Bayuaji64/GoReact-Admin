@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"math"
 	"strconv"
 
 	"example.com/go-admin/db"
@@ -9,11 +10,26 @@ import (
 )
 
 func Alluser(c *fiber.Ctx) error {
+
+	page, _ := strconv.Atoi(c.Query("page", "1"))
+	limit := 5
+	offset := (page - 1) * limit
+	var total int64
 	var users []models.User
 
-	db.DB.Find(&users)
+	db.DB.Preload("Role").Offset(offset).Limit(limit).Find(&users)
+	db.DB.Model(&models.User{}).Count(&total)
 
-	return c.JSON(users)
+	// return c.JSON(users)
+
+	return c.JSON(fiber.Map{
+		"data": users,
+		"meta": fiber.Map{
+			"total":     total,
+			"page":      page,
+			"last_page": int(math.Ceil(float64(total) / float64(limit))),
+		},
+	})
 }
 
 func CreateUser(c *fiber.Ctx) error {
@@ -48,7 +64,7 @@ func GetUser(c *fiber.Ctx) error {
 		Id: uint(id),
 	}
 
-	db.DB.Find(&user)
+	db.DB.Preload("Role").Find(&user)
 
 	return c.JSON(user)
 

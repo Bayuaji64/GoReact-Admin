@@ -32,7 +32,7 @@ func InitDB() error { // Fungsi mengembalikan error
 		return fmt.Errorf("could not connect with the database: %w", err)
 	}
 
-	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.User{}, &models.Role{}, &models.Permission{})
 
 	return nil
 }

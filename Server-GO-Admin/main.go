@@ -42,3 +42,7 @@ func main() {
 	}
 
 }
+
+//  CompileDaemon -command="./go-admin"
+
+// CompileDaemon -build="go build -buildvcs=false -o go-admin ." -command="./go-admin"
