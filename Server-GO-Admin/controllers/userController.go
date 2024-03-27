@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"math"
 	"strconv"
 
 	"example.com/go-admin/db"
@@ -12,24 +11,17 @@ import (
 func Alluser(c *fiber.Ctx) error {
 
 	page, _ := strconv.Atoi(c.Query("page", "1"))
-	limit := 5
-	offset := (page - 1) * limit
-	var total int64
-	var users []models.User
+	// limit := 5
+	// offset := (page - 1) * limit
+	// var total int64
+	// var users []models.User
 
-	db.DB.Preload("Role").Offset(offset).Limit(limit).Find(&users)
-	db.DB.Model(&models.User{}).Count(&total)
+	// db.DB.Preload("Role").Offset(offset).Limit(limit).Find(&users)
+	// db.DB.Model(&models.User{}).Count(&total)
 
 	// return c.JSON(users)
 
-	return c.JSON(fiber.Map{
-		"data": users,
-		"meta": fiber.Map{
-			"total":     total,
-			"page":      page,
-			"last_page": int(math.Ceil(float64(total) / float64(limit))),
-		},
-	})
+	return c.JSON(models.Paginate(db.DB, &models.User{}, page))
 }
 
 func CreateUser(c *fiber.Ctx) error {
@@ -39,7 +31,6 @@ func CreateUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
 	}
 
-	// Cek apakah email sudah ada
 	var existingUser models.User
 	result := db.DB.Where("email = ?", user.Email).First(&existingUser)
 	if result.Error == nil {

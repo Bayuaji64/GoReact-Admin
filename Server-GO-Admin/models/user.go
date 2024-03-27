@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -32,4 +33,23 @@ func (user *User) SetPassword(password string) {
 func (user *User) ComparePassword(password string) error {
 	// Membandingkan password yang diberikan dengan hashed password yang tersimpan
 	return bcrypt.CompareHashAndPassword(user.Password, []byte(password))
+}
+
+func (user *User) Count(db *gorm.DB) int64 {
+
+	var total int64
+
+	db.Model(&User{}).Count(&total)
+
+	return total
+
+}
+func (product *User) Take(db *gorm.DB, limit int, offset int) interface{} {
+
+	var users []User
+
+	db.Preload("Role").Offset(offset).Limit(limit).Find(&users)
+
+	return users
+
 }

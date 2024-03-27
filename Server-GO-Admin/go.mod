@@ -5,11 +5,7 @@ go 1.21.6
 require golang.org/x/crypto v0.21.0
 
 require (
-	github.com/fatih/color v1.16.0 // indirect
-	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/githubnemo/CompileDaemon v1.4.0 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
-	github.com/radovskyb/watcher v1.0.7 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 )
 
