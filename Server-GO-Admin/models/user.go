@@ -44,7 +44,7 @@ func (user *User) Count(db *gorm.DB) int64 {
 	return total
 
 }
-func (product *User) Take(db *gorm.DB, limit int, offset int) interface{} {
+func (user *User) Take(db *gorm.DB, limit int, offset int) interface{} {
 
 	var users []User
 

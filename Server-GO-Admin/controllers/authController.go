@@ -88,12 +88,26 @@ func Login(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"message": "Login success"})
 }
 
+// func User(c *fiber.Ctx) error {
+// 	claims := c.Locals("claims").(*utility.Claims) // Pastikan casting sesuai dengan tipe claims Anda
+
+// 	var user models.User
+
+// 	result := db.DB.Where("id = ?", claims.Issuer).First(&user)
+// 	if result.Error != nil {
+// 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "User not found"})
+// 	}
+
+// 	return c.JSON(user)
+// }
+
 func User(c *fiber.Ctx) error {
 	claims := c.Locals("claims").(*utility.Claims) // Pastikan casting sesuai dengan tipe claims Anda
 
 	var user models.User
 
-	result := db.DB.Where("id = ?", claims.Issuer).First(&user)
+	// Menambahkan Preload("Role") untuk memuat data Role bersamaan dengan User
+	result := db.DB.Where("id = ?", claims.Issuer).Preload("Role").First(&user)
 	if result.Error != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "User not found"})
 	}

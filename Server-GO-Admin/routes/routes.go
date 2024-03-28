@@ -14,6 +14,7 @@ func Setup(app *fiber.App) {
 	PermissionRoutes(app)
 	ProductRoutes(app)
 	UploadRoutes(app)
+	OrderRoutes(app)
 
 	app.Post("/api/logout", controllers.Logout)
 

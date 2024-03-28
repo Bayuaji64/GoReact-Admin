@@ -4,12 +4,17 @@ import (
 	"strconv"
 
 	"example.com/go-admin/db"
+	"example.com/go-admin/middlewares"
 	"example.com/go-admin/models"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Alluser(c *fiber.Ctx) error {
 
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+
+	}
 	page, _ := strconv.Atoi(c.Query("page", "1"))
 	// limit := 5
 	// offset := (page - 1) * limit
@@ -25,6 +30,14 @@ func Alluser(c *fiber.Ctx) error {
 }
 
 func CreateUser(c *fiber.Ctx) error {
+
+	// "email":"cc@mail.com",
+	// "password":"3"
+
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+
+	}
 	var user models.User
 
 	if err := c.BodyParser(&user); err != nil {
@@ -48,6 +61,10 @@ func CreateUser(c *fiber.Ctx) error {
 }
 
 func GetUser(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+
+	}
 
 	id, _ := strconv.Atoi(c.Params("id"))
 

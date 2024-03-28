@@ -36,8 +36,8 @@ func CreateRoleSTRING(c *fiber.Ctx) error {
 	}
 
 	role := models.Role{
-		Name:       roleDTO["name"].(string),
-		Permission: permissions,
+		Name:        roleDTO["name"].(string),
+		Permissions: permissions,
 	}
 
 	if err := db.DB.Create(&role).Error; err != nil {
@@ -71,8 +71,8 @@ func CreateRole(c *fiber.Ctx) error {
 	}
 
 	role := models.Role{
-		Name:       roleDTO["name"].(string),
-		Permission: permissions, // Ensure this matches your struct field name for permissions
+		Name:        roleDTO["name"].(string),
+		Permissions: permissions, // Ensure this matches your struct field name for permissions
 	}
 
 	if err := db.DB.Create(&role).Error; err != nil {
